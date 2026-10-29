@@ -27,4 +27,8 @@ public class Maintenance {
 
     @Column(length = 255)
     private String description;
+
+    // Côté propriétaire : porte la clé étrangère (vehicule_id_vehicule).
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Vehicule vehicule;
 }

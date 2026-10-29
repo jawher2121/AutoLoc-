@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "vehicule")
@@ -39,4 +43,17 @@ public class Vehicule {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private StatutVehicule statut;
+
+    // Côté propriétaire : porte la clé étrangère (agence_id_agence). Aucune cascade.
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Agence agence;
+
+    // Côté propriétaire du ManyToMany : définit la table de jointure. Set, aucune cascade.
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "vehicule_equipement")
+    private Set<Equipement> equipements = new HashSet<>();
+
+    // Côté inverse : la clé étrangère est dans Maintenance. PERSIST seulement.
+    @OneToMany(mappedBy = "vehicule", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private List<Maintenance> maintenances = new ArrayList<>();
 }

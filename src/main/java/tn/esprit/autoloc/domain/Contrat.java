@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "contrat")
@@ -29,4 +31,24 @@ public class Contrat {
 
     @Column(nullable = false)
     private boolean valide;
+
+    // Côté propriétaire du OneToOne : clé étrangère reservation_id_reservation.
+    @OneToOne(fetch = FetchType.LAZY)
+    private Reservation reservation;
+
+    // Côté inverse : la clé étrangère est dans Paiement. Composition : ALL + orphanRemoval.
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Paiement> paiements = new ArrayList<>();
+
+    // Garde les deux côtés de l'association synchronisés.
+    public void addPaiement(Paiement paiement) {
+        paiements.add(paiement);
+        paiement.setContrat(this);
+    }
+
+    public void removePaiement(Paiement paiement) {
+        paiements.remove(paiement);
+        paiement.setContrat(null);
+    }
 }
