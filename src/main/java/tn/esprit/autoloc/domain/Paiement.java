@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Paiement {
     private ModePaiement modePaiement;
 
     // Côté propriétaire : porte la clé étrangère (contrat_id_contrat).
+    @JsonBackReference("contrat-paiements")
     @ManyToOne(fetch = FetchType.LAZY)
     private Contrat contrat;
 }

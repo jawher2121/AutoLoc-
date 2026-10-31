@@ -1,5 +1,6 @@
 package tn.esprit.autoloc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,7 @@ public class Reservation {
     private Vehicule vehicule;
 
     // Côté inverse du OneToOne : la clé étrangère est dans Contrat. Cascade ALL.
+    @JsonIgnore
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Contrat contrat;
 }
